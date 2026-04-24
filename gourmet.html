@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>グルメ — 江津 GOTSU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #1a1812; --ink-muted: #5a5347; --ink-faint: #9a9088;
+    --paper: #f5f0e8; --paper-warm: #ede6d6; --paper-dark: #d6cdb8;
+    --kawara: #9b3220; --kawara-pale: #edd8cc; --kawara-dark: #5c160a;
+    --gold: #c4992a;
+    --sans: 'Noto Sans JP', sans-serif;
+    --serif-ja: 'Shippori Mincho', serif;
+    --serif-en: 'Cormorant Garamond', serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--paper-warm); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.8; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(237,230,214,0.93); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--paper-dark);
+  }
+  .nav-logo { font-family: var(--serif-ja); font-size: 1.4rem; font-weight: 600; letter-spacing: 0.15em; color: var(--ink); text-decoration: none; }
+  .nav-logo span { font-family: var(--serif-en); font-size: 0.65rem; font-weight: 300; letter-spacing: 0.4em; display: block; color: var(--ink-faint); text-transform: uppercase; margin-top: -2px; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: 0.78rem; letter-spacing: 0.2em; color: var(--ink-muted); text-decoration: none; font-weight: 400; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--kawara); }
+
+  .page-hero {
+    padding: 10rem 3rem 5rem; max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end;
+  }
+  .breadcrumb { font-size: 0.68rem; letter-spacing: 0.35em; color: var(--ink-faint); text-transform: uppercase; margin-bottom: 1.5rem; }
+  .breadcrumb a { color: var(--ink-faint); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--kawara); }
+  .page-title-ja { font-family: var(--serif-ja); font-size: clamp(3.5rem, 6vw, 6rem); font-weight: 700; letter-spacing: 0.06em; line-height: 1; }
+  .page-title-en { font-family: var(--serif-en); font-size: 1rem; font-style: italic; color: var(--ink-faint); letter-spacing: 0.3em; margin-top: 0.8rem; }
+  .page-desc { font-family: var(--serif-ja); font-size: 0.95rem; line-height: 2.3; color: var(--ink-muted); }
+  .page-rule { border: none; border-top: 1px solid var(--paper-dark); margin: 0 3rem; }
+
+  .filter-bar {
+    max-width: 1200px; margin: 3rem auto; padding: 0 3rem;
+    display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;
+  }
+  .filter-label { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--ink-faint); text-transform: uppercase; margin-right: 0.5rem; }
+  .filter-tag {
+    padding: 0.4rem 1rem; border: 1px solid var(--paper-dark);
+    font-size: 0.7rem; letter-spacing: 0.15em; color: var(--ink-muted);
+    cursor: pointer; transition: all 0.2s; background: transparent;
+    font-family: var(--sans); font-weight: 300;
+  }
+  .filter-tag.active, .filter-tag:hover { background: var(--kawara); border-color: var(--kawara); color: var(--paper); }
+
+  .cards-wrap { max-width: 1200px; margin: 0 auto; padding: 0 3rem 8rem; }
+  .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+
+  .food-card {
+    background: var(--paper); overflow: hidden;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .food-card.visible { opacity: 1; transform: translateY(0); }
+  
+
+  .food-img { width: 100%; height: 200px; object-fit: cover; display: block; filter: sepia(8%) saturate(95%); transition: transform 0.5s; }
+  .food-card:hover .food-img { transform: scale(1.04); }
+
+  .food-body { padding: 1.5rem; }
+  .food-label { font-size: 0.6rem; letter-spacing: 0.35em; color: var(--kawara); text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 400; }
+  .food-name { font-family: var(--serif-ja); font-size: 1.1rem; font-weight: 600; letter-spacing: 0.04em; margin-bottom: 0.5rem; line-height: 1.4; }
+  .food-desc { font-size: 0.78rem; color: var(--ink-muted); line-height: 1.8; font-weight: 300; }
+  .food-divider { border: none; border-top: 1px solid var(--paper-dark); margin: 1rem 0; }
+  .food-price { font-family: var(--serif-en); font-size: 0.85rem; color: var(--gold); letter-spacing: 0.1em; }
+  .food-shop { font-size: 0.7rem; color: var(--ink-faint); margin-top: 0.3rem; }
+  .food-link { display: inline-block; margin-top: 1.2rem; font-size: 0.7rem; letter-spacing: 0.25em; color: var(--kawara); border-bottom: 1px solid var(--kawara-pale); padding-bottom: 2px; text-decoration: none; transition: border-color 0.2s; }
+  .food-link:hover { border-color: var(--kawara); }
+
+  .card-links { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid var(--paper-dark); }
+  .card-link {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    font-size: 0.62rem; letter-spacing: 0.15em; padding: 0.3rem 0.7rem;
+    border: 1px solid var(--paper-dark); color: var(--ink-muted);
+    text-decoration: none; font-family: var(--sans); font-weight: 400;
+    transition: all 0.2s;
+  }
+  .card-link:hover { background: var(--kawara); border-color: var(--kawara); color: var(--paper); }
+
+  /* おすすめの店 */
+  .shop-section { max-width: 1200px; margin: 0 auto; padding: 0 3rem 8rem; border-top: 1px solid var(--paper-dark); padding-top: 4rem; }
+  .shop-heading { font-family: var(--serif-ja); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+  .shop-sub { font-family: var(--serif-en); font-size: 0.85rem; font-style: italic; color: var(--ink-faint); letter-spacing: 0.2em; margin-bottom: 2.5rem; }
+  .shop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .shop-card {
+    background: var(--paper); padding: 1.8rem; cursor: pointer;
+    opacity: 0; transform: translateY(15px); transition: opacity 0.5s ease, transform 0.5s ease, background 0.2s;
+    border: 1px solid var(--paper-dark);
+  }
+  .shop-card.visible { opacity: 1; transform: translateY(0); }
+  .shop-card:hover { background: var(--paper-dark); }
+  .shop-type { font-size: 0.6rem; letter-spacing: 0.3em; color: var(--kawara); text-transform: uppercase; margin-bottom: 0.5rem; }
+  .shop-name { font-family: var(--serif-ja); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: 0.04em; }
+  .shop-info { font-size: 0.72rem; color: var(--ink-muted); line-height: 1.8; }
+  .shop-tag { display: inline-block; font-size: 0.6rem; padding: 0.15rem 0.5rem; background: var(--kawara-pale); color: var(--kawara); margin: 0.4rem 0.2rem 0 0; }
+
+  footer { background: var(--ink); color: var(--paper); padding: 3rem; text-align: center; }
+  footer p { font-size: 0.72rem; color: rgba(245,240,232,0.4); letter-spacing: 0.15em; }
+  .back-link { display: inline-block; margin-bottom: 1.5rem; font-size: 0.72rem; letter-spacing: 0.25em; color: rgba(245,240,232,0.6); text-decoration: none; border-bottom: 1px solid rgba(245,240,232,0.2); padding-bottom: 2px; }
+  .back-link:hover { color: var(--paper); border-color: var(--paper); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  .page-hero > * { animation: fadeUp 0.7s ease forwards; opacity: 0; }
+  .page-hero > *:nth-child(1) { animation-delay: 0.1s; }
+  .page-hero > *:nth-child(2) { animation-delay: 0.3s; }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; } .nav-links { gap: 1.2rem; }
+    .page-hero { grid-template-columns: 1fr; padding: 8rem 1.5rem 3rem; gap: 2rem; }
+    .filter-bar, .cards-wrap, .shop-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .cards-wrap { padding-bottom: 2rem; } .shop-section { padding-bottom: 4rem; }
+    .cards-grid, .shop-grid { grid-template-columns: 1fr; }
+    .page-rule { margin: 0 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="gotsu.html" class="nav-logo">江津<span>Gotsu, Shimane</span></a>
+  <ul class="nav-links">
+    <li><a href="experience.html">体験</a></li>
+    <li><a href="people.html">人</a></li>
+    <li><a href="gourmet.html" class="active">グルメ</a></li>
+    <li><a href="gotsu.html#events">イベント</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div>
+    <p class="breadcrumb"><a href="gotsu.html">江津トップ</a> &nbsp;/&nbsp; グルメ</p>
+    <h1 class="page-title-ja">グルメ</h1>
+    <p class="page-title-en">Taste of Gotsu</p>
+  </div>
+  <p class="page-desc">日本海の新鮮な魚介、中国山地で育った畜産物、石見の棚田米。江津の食は、土地の恵みそのものです。食べることが旅になる──そんな体験が、ここにはあります。</p>
+</div>
+<hr class="page-rule">
+
+<div class="filter-bar">
+  <span class="filter-label">カテゴリ</span>
+  <button class="filter-tag active" data-cat="all">すべて</button>
+  <button class="filter-tag" data-cat="sea">海の幸</button>
+  <button class="filter-tag" data-cat="mountain">山の幸</button>
+  <button class="filter-tag" data-cat="drink">お酒・飲み物</button>
+</div>
+
+<div class="cards-wrap">
+  <div class="cards-grid">
+
+    <div class="food-card" data-cat="mountain">
+      <img class="food-img" src="https://images.unsplash.com/photo-1547592166-23ac45744acd?w=600&q=80" alt="まる姫ポーク">
+      <div class="food-body">
+        <p class="food-label">Brand Pork</p>
+        <p class="food-name">まる姫ポーク</p>
+        <p class="food-desc">江津市が誇るブランド豚。2018年の味噌カツ丼コンテスト優勝の実績。やさか味噌とのコンビが絶品で、市内のとんかつ店で食べられる。</p>
+        <hr class="food-divider">
+        <p class="food-price">¥1,000〜 / 市内飲食店</p>
+        <p class="food-shop">📍 江津市内の飲食店</p>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp" target="_blank" rel="noopener" class="card-link">🌐 お店を探す</a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="food-card" data-cat="sea">
+      <img class="food-img" src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600&q=80" alt="日本海海鮮">
+      <div class="food-body">
+        <p class="food-label">Sea Food</p>
+        <p class="food-name">日本海の海鮮丼</p>
+        <p class="food-desc">浜田港や江津近海で水揚げされた新鮮な魚介を豪快に盛り合わせ。のどぐろ・バトウ・あなごなど石見ならではの幸が揃う。</p>
+        <hr class="food-divider">
+        <p class="food-price">¥1,500〜 / 各地の飲食店</p>
+        <p class="food-shop">📍 食彩空間 海人（江津駅徒歩1分）ほか</p>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp" target="_blank" rel="noopener" class="card-link">🌐 お店を探す</a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="food-card" data-cat="sweets">
+      <img class="food-img" src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=600&q=80" alt="敬川饅頭">
+      <div class="food-body">
+        <p class="food-label">Local Sweets</p>
+        <p class="food-name">敬川饅頭</p>
+        <p class="food-desc">江津に生まれ育った人なら誰もが知る昔ながらの素朴な饅頭。程よい甘みと薄皮が特徴。帰省のたびに買い求める地元の定番土産。</p>
+        <hr class="food-divider">
+        <p class="food-price">数個入り ¥500〜</p>
+        <p class="food-shop">📍 江津市内の菓子店</p>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp" target="_blank" rel="noopener" class="card-link">🌐 詳細はこちら</a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="food-card" data-cat="sea">
+      <img class="food-img" src="https://images.unsplash.com/photo-1535448033526-c0e85c9e6968?w=600&q=80" alt="江の川の天然鮎">
+      <div class="food-body">
+        <p class="food-label">River Food</p>
+        <p class="food-name">江の川の天然鮎</p>
+        <p class="food-desc">中国地方最大の大河・江の川が育てた天然鮎。塩焼きにすると皮はパリッと中はふっくら。川の香りを楽しめる夏だけの贅沢な味。</p>
+        <hr class="food-divider">
+        <p class="food-price">¥1,200〜</p>
+        <p class="food-shop">📍 桜江地区の川沿い料理店・道の駅</p>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp" target="_blank" rel="noopener" class="card-link">🌐 お店を探す</a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="food-card" data-cat="mountain">
+      <img class="food-img" src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&q=80" alt="桜江の棚田米">
+      <div class="food-body">
+        <p class="food-label">Rice</p>
+        <p class="food-name">桜江の棚田米</p>
+        <p class="food-desc">江の川流域の昼夜の寒暖差が生む、もっちりとした甘みのある棚田米。地元農家が大切に育てた一粒一粒が、江津の食卓を支えている。</p>
+        <hr class="food-divider">
+        <p class="food-price">¥800〜 / 定食</p>
+        <p class="food-shop">📍 道の駅 サンピコごうつ / 農家民泊</p>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp" target="_blank" rel="noopener" class="card-link">🌐 お店を探す</a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="food-card" data-cat="mountain">
+      <img class="food-img" src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=600&q=80" alt="石見焼の器">
+      <div class="food-body">
+        <p class="food-label">Craft × Food</p>
+        <p class="food-name">石見焼の器で楽しむ料理</p>
+        <p class="food-desc">伝統工芸・石見焼の器で提供される地元料理。一期一会の風合いを持つ手作りの器が、江津の食をより豊かに彩る。市内の料亭・カフェで体験できる。</p>
+        <hr class="food-divider">
+        <p class="food-price">¥1,500〜 / コース</p>
+        <p class="food-shop">📍 有福温泉エリアのレストラン</p>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp/arifuku" target="_blank" rel="noopener" class="card-link">🌐 お店を探す</a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="food-card" data-cat="sea">
+      <img class="food-img" src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80" alt="石見和牛">
+      <div class="food-body">
+        <p class="food-label">Brand Beef</p>
+        <p class="food-name">石見和牛</p>
+        <p class="food-desc">島根県西部・石見地方で育てられたブランド和牛。しまね海洋館アクアス隣のレストランでは石見和牛カルビ丼が人気メニューのひとつ。</p>
+        <hr class="food-divider">
+        <p class="food-price">¥1,800〜 / 各地の飲食店</p>
+        <p class="food-shop">📍 アクアスレストラン / 市内飲食店</p>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp" target="_blank" rel="noopener" class="card-link">🌐 お店を探す</a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="food-card" data-cat="mountain">
+      <img class="food-img" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80" alt="有福温泉の地元食材">
+      <div class="food-body">
+        <p class="food-label">Local Cuisine</p>
+        <p class="food-name">有福温泉のイタリアン</p>
+        <p class="food-desc">有福温泉街の中心に位置するレストランが提供する本格イタリアン。浜田港の新鮮な日本海の幸と、地元で獲れる旬の食材をふんだんに使用。</p>
+        <hr class="food-divider">
+        <p class="food-price">¥1,500〜 / ランチ</p>
+        <p class="food-shop">📍 有福温泉街 / 火曜定休</p>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp/arifuku" target="_blank" rel="noopener" class="card-link">🌐 詳細はこちら</a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="food-card" data-cat="drink">
+      <img class="food-img" src="https://images.unsplash.com/photo-1534482421-64566f976cfa?w=600&q=80" alt="石州の地酒">
+      <div class="food-body">
+        <p class="food-label">Local Sake</p>
+        <p class="food-name">石州の地酒</p>
+        <p class="food-desc">石見の清冽な伏流水と島根県産米で醸した辛口の地酒。日本海の幸との相性は抜群。道の駅サンピコごうつなどで購入できる。</p>
+        <hr class="food-divider">
+        <p class="food-price">¥600〜 / 一杯</p>
+        <p class="food-shop">📍 道の駅 サンピコごうつ / 市内酒店</p>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp" target="_blank" rel="noopener" class="card-link">🌐 詳細はこちら</a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- おすすめの店 -->
+<div class="shop-section">
+  <h2 class="shop-heading">おすすめの店</h2>
+  <p class="shop-sub">Recommended Restaurants & Shops</p>
+  <div class="shop-grid">
+    <div class="shop-card">
+      <p class="shop-type">Sea Food</p>
+      <p class="shop-name">漁師の台所 まつもと</p>
+      <p class="shop-info">📍 江津市江津町<br>🕐 11:00〜14:00 / 17:00〜21:00</p>
+      <p><span class="shop-tag">のどぐろ</span><span class="shop-tag">鮮魚定食</span><span class="shop-tag">要予約</span></p>
+    </div>
+    <div class="shop-card">
+      <p class="shop-type">Local Cuisine</p>
+      <p class="shop-name">郷土料理 いわみ庵</p>
+      <p class="shop-info">📍 江津市桜江町<br>🕐 11:30〜14:30（火曜定休）</p>
+      <p><span class="shop-tag">石見ポーク</span><span class="shop-tag">棚田米</span><span class="shop-tag">里芋煮</span></p>
+    </div>
+    <div class="shop-card">
+      <p class="shop-type">Café</p>
+      <p class="shop-name">紙と珈琲</p>
+      <p class="shop-info">📍 江津市江津町<br>🕐 10:00〜18:00（月曜定休）</p>
+      <p><span class="shop-tag">和紙コーヒー</span><span class="shop-tag">地酒</span><span class="shop-tag">和紙雑貨</span></p>
+    </div>
+    <div class="shop-card">
+      <p class="shop-type">Farmers Market</p>
+      <p class="shop-name">道の駅 ことまち</p>
+      <p class="shop-info">📍 江津市嘉久志町<br>🕐 9:00〜18:00（年中無休）</p>
+      <p><span class="shop-tag">棚田米</span><span class="shop-tag">野菜直売</span><span class="shop-tag">特産品</span></p>
+    </div>
+    <div class="shop-card">
+      <p class="shop-type">Sake Brewery</p>
+      <p class="shop-name">石州酒造 江津蔵</p>
+      <p class="shop-info">📍 江津市江津町<br>🕐 見学 10:00〜16:00（要予約）</p>
+      <p><span class="shop-tag">地酒</span><span class="shop-tag">蔵元見学</span><span class="shop-tag">試飲</span></p>
+    </div>
+    <div class="shop-card">
+      <p class="shop-type">River Dining</p>
+      <p class="shop-name">川床 えのかわ</p>
+      <p class="shop-info">📍 江津市桜江町川戸<br>🕐 7〜9月のみ営業</p>
+      <p><span class="shop-tag">天然鮎</span><span class="shop-tag">川床席</span><span class="shop-tag">夏限定</span></p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a href="gotsu.html" class="back-link">← 江津トップへ戻る</a>
+  
+</footer>
+
+<script>
+  const allReveal = document.querySelectorAll('.food-card, .shop-card');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 70); });
+  }, { threshold: 0.08 });
+  allReveal.forEach(el => io.observe(el));
+
+  document.querySelectorAll('.filter-tag').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const cat = this.dataset.cat;
+      document.querySelectorAll('.food-card').forEach(card => {
+        const match = cat === 'all' || card.dataset.cat === cat;
+        card.style.display = match ? '' : 'none';
+        if (match) card.classList.add('visible');
+      });
+    });
+  });
+</script>
+</body>
+</html>

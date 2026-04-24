@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>体験 — 江津 GOTSU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #1a1812; --ink-muted: #5a5347; --ink-faint: #9a9088;
+    --paper: #f5f0e8; --paper-warm: #ede6d6; --paper-dark: #d6cdb8;
+    --kawara: #9b3220; --kawara-pale: #edd8cc;
+    --sans: 'Noto Sans JP', sans-serif;
+    --serif-ja: 'Shippori Mincho', serif;
+    --serif-en: 'Cormorant Garamond', serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.8; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(245,240,232,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--paper-dark);
+  }
+  .nav-logo { font-family: var(--serif-ja); font-size: 1.4rem; font-weight: 600; letter-spacing: 0.15em; color: var(--ink); text-decoration: none; }
+  .nav-logo span { font-family: var(--serif-en); font-size: 0.65rem; font-weight: 300; letter-spacing: 0.4em; display: block; color: var(--ink-faint); text-transform: uppercase; margin-top: -2px; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: 0.78rem; letter-spacing: 0.2em; color: var(--ink-muted); text-decoration: none; font-weight: 400; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--kawara); }
+
+  .page-hero {
+    padding: 10rem 3rem 5rem; max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end;
+  }
+  .breadcrumb { font-size: 0.68rem; letter-spacing: 0.35em; color: var(--ink-faint); text-transform: uppercase; margin-bottom: 1.5rem; }
+  .breadcrumb a { color: var(--ink-faint); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--kawara); }
+  .page-title-ja { font-family: var(--serif-ja); font-size: clamp(3.5rem, 6vw, 6rem); font-weight: 700; letter-spacing: 0.06em; line-height: 1; }
+  .page-title-en { font-family: var(--serif-en); font-size: 1rem; font-style: italic; color: var(--ink-faint); letter-spacing: 0.3em; margin-top: 0.8rem; }
+  .page-desc { font-family: var(--serif-ja); font-size: 0.95rem; line-height: 2.3; color: var(--ink-muted); }
+  .page-rule { border: none; border-top: 1px solid var(--paper-dark); margin: 0 3rem; }
+
+  .filter-bar {
+    max-width: 1200px; margin: 3rem auto; padding: 0 3rem;
+    display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;
+  }
+  .filter-label { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--ink-faint); text-transform: uppercase; margin-right: 0.5rem; }
+  .filter-tag {
+    padding: 0.4rem 1rem; border: 1px solid var(--paper-dark);
+    font-size: 0.7rem; letter-spacing: 0.15em; color: var(--ink-muted);
+    cursor: pointer; transition: all 0.2s; background: transparent;
+    font-family: var(--sans); font-weight: 300;
+  }
+  .filter-tag.active, .filter-tag:hover { background: var(--kawara); border-color: var(--kawara); color: var(--paper); }
+
+  .cards-wrap { max-width: 1200px; margin: 0 auto; padding: 0 3rem 8rem; }
+  .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+
+  .exp-card {
+    background: var(--paper-warm); overflow: hidden;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease, background 0.2s;
+  }
+  .exp-card.visible { opacity: 1; transform: translateY(0); }
+  .exp-card:hover { background: var(--paper-warm); }
+
+  .exp-img { width: 100%; height: 200px; object-fit: cover; display: block; filter: sepia(10%) saturate(90%); transition: transform 0.5s; }
+  
+
+  .exp-body { padding: 1.5rem; }
+  .exp-tag-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.8rem; }
+  .exp-tag { font-size: 0.6rem; letter-spacing: 0.3em; color: var(--paper); background: var(--kawara); padding: 0.2rem 0.7rem; text-transform: uppercase; font-weight: 400; }
+  .exp-diff { font-size: 0.62rem; letter-spacing: 0.15em; color: var(--ink-faint); }
+  .exp-name { font-family: var(--serif-ja); font-size: 1.1rem; font-weight: 600; letter-spacing: 0.04em; margin-bottom: 0.5rem; line-height: 1.4; }
+  .exp-desc { font-size: 0.78rem; color: var(--ink-muted); line-height: 1.8; font-weight: 300; margin-bottom: 1rem; }
+  .exp-meta { display: flex; gap: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--paper-dark); flex-wrap: wrap; }
+  .exp-meta-item { font-size: 0.68rem; color: var(--ink-faint); }
+  .exp-meta-item strong { display: block; font-size: 0.72rem; color: var(--ink-muted); font-weight: 400; margin-bottom: 0.1rem; }
+  .exp-link { display: inline-block; margin-top: 1.2rem; font-size: 0.7rem; letter-spacing: 0.25em; color: var(--kawara); border-bottom: 1px solid var(--kawara-pale); padding-bottom: 2px; text-decoration: none; transition: border-color 0.2s; }
+  .exp-link:hover { border-color: var(--kawara); }
+
+  .card-links { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid var(--paper-dark); }
+  .card-link {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    font-size: 0.62rem; letter-spacing: 0.15em; padding: 0.3rem 0.7rem;
+    border: 1px solid var(--paper-dark); color: var(--ink-muted);
+    text-decoration: none; font-family: var(--sans); font-weight: 400;
+    transition: all 0.2s;
+  }
+  .card-link:hover { background: var(--kawara); border-color: var(--kawara); color: var(--paper); }
+
+  footer { background: var(--ink); color: var(--paper); padding: 3rem; text-align: center; }
+  footer p { font-size: 0.72rem; color: rgba(245,240,232,0.4); letter-spacing: 0.15em; }
+  .back-link { display: inline-block; margin-bottom: 1.5rem; font-size: 0.72rem; letter-spacing: 0.25em; color: rgba(245,240,232,0.6); text-decoration: none; border-bottom: 1px solid rgba(245,240,232,0.2); padding-bottom: 2px; }
+  .back-link:hover { color: var(--paper); border-color: var(--paper); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  .page-hero > * { animation: fadeUp 0.7s ease forwards; opacity: 0; }
+  .page-hero > *:nth-child(1) { animation-delay: 0.1s; }
+  .page-hero > *:nth-child(2) { animation-delay: 0.3s; }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; } .nav-links { gap: 1.2rem; }
+    .page-hero { grid-template-columns: 1fr; padding: 8rem 1.5rem 3rem; gap: 2rem; }
+    .filter-bar, .cards-wrap { padding: 0 1.5rem; } .cards-wrap { padding-bottom: 4rem; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .page-rule { margin: 0 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="gotsu.html" class="nav-logo">江津<span>Gotsu, Shimane</span></a>
+  <ul class="nav-links">
+    <li><a href="experience.html" class="active">体験</a></li>
+    <li><a href="people.html">人</a></li>
+    <li><a href="gourmet.html">グルメ</a></li>
+    <li><a href="gotsu.html#events">イベント</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div>
+    <p class="breadcrumb"><a href="gotsu.html">江津トップ</a> &nbsp;/&nbsp; 体験</p>
+    <h1 class="page-title-ja">体験</h1>
+    <p class="page-title-en">Experiences in Gotsu</p>
+  </div>
+  <p class="page-desc">川・海・山・里──江津の豊かな自然と文化が、ここにしかない体験をつくります。地元の職人や漁師、農家と一緒に過ごす時間は、旅の記憶をより深いものにしてくれるはずです。</p>
+</div>
+<hr class="page-rule">
+
+<div class="filter-bar">
+  <span class="filter-label">カテゴリ</span>
+  <button class="filter-tag active" data-cat="all">すべて</button>
+  <button class="filter-tag" data-cat="water">水辺</button>
+  <button class="filter-tag" data-cat="craft">工芸</button>
+  <button class="filter-tag" data-cat="nature">自然</button>
+  <button class="filter-tag" data-cat="food">食・農</button>
+  <button class="filter-tag" data-cat="culture">文化</button>
+</div>
+
+<div class="cards-wrap">
+  <div class="cards-grid">
+
+    <div class="exp-card" data-cat="culture">
+      <img class="exp-img" src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="石見神楽">
+      <div class="exp-body">
+        <div class="exp-tag-row"><span class="exp-tag">Culture</span><span class="exp-diff">観覧無料</span></div>
+        <p class="exp-name">石見神楽 定期公演（はっしー広場）</p>
+        <p class="exp-desc">しまね海洋館アクアス隣のはっしー広場にて4〜11月の毎週日曜・祝日に屋外公演を開催。笛・太鼓の囃子にのせて神々の物語が舞う。入場無料。</p>
+        <div class="exp-meta">
+          <div class="exp-meta-item"><strong>開催</strong>4〜11月 日・祝</div>
+          <div class="exp-meta-item"><strong>時間</strong>13:00〜15:00</div>
+          <div class="exp-meta-item"><strong>料金</strong>無料</div>
+        </div>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp/iwamikagura_schedule2024" target="_blank" rel="noopener" class="card-link">🌐 公演情報</a>
+          <a href="https://www.instagram.com/iwamikaguramainoza/" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card" data-cat="culture">
+      <img class="exp-img" src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="石見神楽 パレット">
+      <div class="exp-body">
+        <div class="exp-tag-row"><span class="exp-tag">Culture</span><span class="exp-diff">月1回</span></div>
+        <p class="exp-name">石見神楽 定期公演（パレットごうつ）</p>
+        <p class="exp-desc">江津駅前パレットごうつにて毎月第2日曜日に開催（10・11月除く）。1団体による約2時間半の公演。令和7年4月より新形式でリニューアル。</p>
+        <div class="exp-meta">
+          <div class="exp-meta-item"><strong>開催</strong>毎月第2日曜</div>
+          <div class="exp-meta-item"><strong>場所</strong>パレットごうつ</div>
+        </div>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp/iwamikagura/palet" target="_blank" rel="noopener" class="card-link">🌐 公演情報</a>
+          <a href="https://www.instagram.com/iwamikaguramainoza/" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card" data-cat="craft">
+      <img class="exp-img" src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=600&q=80" alt="石見焼陶芸体験">
+      <div class="exp-body">
+        <div class="exp-tag-row"><span class="exp-tag">Craft</span><span class="exp-diff">全年齢</span></div>
+        <p class="exp-name">石見焼 陶芸体験</p>
+        <p class="exp-desc">江戸時代から続く伝統工芸・石見焼。江津市内の窯元で都野津の良質な粘土を使った手びねり体験が楽しめる。世界にひとつの器をお持ち帰り。</p>
+        <div class="exp-meta">
+          <div class="exp-meta-item"><strong>場所</strong>市内各窯元</div>
+          <div class="exp-meta-item"><strong>要予約</strong>各窯元へ</div>
+        </div>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp/iwami" target="_blank" rel="noopener" class="card-link">🌐 窯元一覧</a>
+          <a href="https://www.instagram.com/masunogama/" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card" data-cat="nature">
+      <img class="exp-img" src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80" alt="有福温泉">
+      <div class="exp-body">
+        <div class="exp-tag-row"><span class="exp-tag">Onsen</span><span class="exp-diff">日帰りOK</span></div>
+        <p class="exp-name">有福温泉 日帰り入浴</p>
+        <p class="exp-desc">1370年以上の歴史を誇る美肌の湯。御前湯・さつき湯・やよい湯の3つの公衆浴場が楽しめる。単純アルカリ泉で美白効果抜群。</p>
+        <div class="exp-meta">
+          <div class="exp-meta-item"><strong>料金</strong>大人¥350〜</div>
+          <div class="exp-meta-item"><strong>場所</strong>江津市有福温泉町</div>
+        </div>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp/arifuku" target="_blank" rel="noopener" class="card-link">🌐 詳細はこちら</a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card" data-cat="water">
+      <img class="exp-img" src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80" alt="江の川カヤック">
+      <div class="exp-body">
+        <div class="exp-tag-row"><span class="exp-tag">Water Activity</span><span class="exp-diff">初心者OK</span></div>
+        <p class="exp-name">江の川カヤック体験</p>
+        <p class="exp-desc">中国地方最大の大河・江の川を、ガイドと一緒にのんびり下る体験。水源から194キロを旅してきた大河の流れを肌で感じる。</p>
+        <div class="exp-meta">
+          <div class="exp-meta-item"><strong>開催</strong>4〜10月</div>
+          <div class="exp-meta-item"><strong>場所</strong>桜江地区</div>
+        </div>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp" target="_blank" rel="noopener" class="card-link">🌐 詳細はこちら</a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card" data-cat="nature">
+      <img class="exp-img" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="波子海岸">
+      <div class="exp-body">
+        <div class="exp-tag-row"><span class="exp-tag">Nature</span><span class="exp-diff">通年</span></div>
+        <p class="exp-name">波子海岸・黒松海水浴場</p>
+        <p class="exp-desc">アクアス隣に広がる日本海の海岸。夏は海水浴でにぎわい、夕暮れ時には山陰らしい美しい海岸線が広がる。静かなビーチで心を解放。</p>
+        <div class="exp-meta">
+          <div class="exp-meta-item"><strong>場所</strong>江津市波子町</div>
+          <div class="exp-meta-item"><strong>入場</strong>無料</div>
+        </div>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp/kankou" target="_blank" rel="noopener" class="card-link">🌐 詳細はこちら</a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card" data-cat="craft">
+      <img class="exp-img" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80" alt="石見焼 舞乃座">
+      <div class="exp-body">
+        <div class="exp-tag-row"><span class="exp-tag">Culture</span><span class="exp-diff">要予約</span></div>
+        <p class="exp-name">石見神楽 舞乃座（有料公演）</p>
+        <p class="exp-desc">江津市後地町にある石見神楽専用劇場「舞乃座」。第1・3日曜日は¥2,000、第2・4金曜日は¥1,000で臨場感あふれる公演が楽しめる。</p>
+        <div class="exp-meta">
+          <div class="exp-meta-item"><strong>料金</strong>¥1,000〜2,000</div>
+          <div class="exp-meta-item"><strong>予約</strong>090-8065-0002</div>
+        </div>
+        <div class="card-links">
+          <a href="https://www.facebook.com/mainoza.iwamikagura/" target="_blank" rel="noopener" class="card-link">🌐 詳細はこちら</a>
+          <a href="https://www.instagram.com/iwamikaguramainoza/" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card" data-cat="nature">
+      <img class="exp-img" src="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?w=600&q=80" alt="岩瀧寺の滝">
+      <div class="exp-body">
+        <div class="exp-tag-row"><span class="exp-tag">Nature</span><span class="exp-diff">散策</span></div>
+        <p class="exp-name">岩瀧寺の滝 散策</p>
+        <p class="exp-desc">江津市指定文化財・岩瀧寺の滝。他ではなかなか見られない岩肌を斜めに流れる珍しい滝。駐車場から平坦な道を歩いてアクセスできる。</p>
+        <div class="exp-meta">
+          <div class="exp-meta-item"><strong>入場</strong>無料</div>
+          <div class="exp-meta-item"><strong>場所</strong>江津市桜江地区</div>
+        </div>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp/kankou" target="_blank" rel="noopener" class="card-link">🌐 詳細はこちら</a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card" data-cat="culture">
+      <img class="exp-img" src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80" alt="江津本町 甍街道">
+      <div class="exp-body">
+        <div class="exp-tag-row"><span class="exp-tag">Sightseeing</span><span class="exp-diff">散策</span></div>
+        <p class="exp-name">江津本町 甍街道散策</p>
+        <p class="exp-desc">江戸時代に北前船の寄港地として栄えた江津本町。商家の家屋が今も残る「甍街道」を歩き、石州瓦の赤い屋根が連なる往時の面影を辿る。</p>
+        <div class="exp-meta">
+          <div class="exp-meta-item"><strong>入場</strong>無料</div>
+          <div class="exp-meta-item"><strong>場所</strong>江津市江津本町</div>
+        </div>
+        <div class="card-links">
+          <a href="https://gotsu-kanko.jp/kankou" target="_blank" rel="noopener" class="card-link">🌐 詳細はこちら</a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <a href="gotsu.html" class="back-link">← 江津トップへ戻る</a>
+  
+</footer>
+
+<script>
+  const cards = document.querySelectorAll('.exp-card');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
+  }, { threshold: 0.1 });
+  cards.forEach(c => io.observe(c));
+
+  document.querySelectorAll('.filter-tag').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const cat = this.dataset.cat;
+      cards.forEach(card => {
+        const match = cat === 'all' || card.dataset.cat === cat;
+        card.style.display = match ? '' : 'none';
+        if (match) card.classList.add('visible');
+      });
+    });
+  });
+</script>
+</body>
+</html>

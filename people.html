@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人 — 江津 GOTSU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #1a1812; --ink-muted: #5a5347; --ink-faint: #9a9088;
+    --paper: #f5f0e8; --paper-warm: #ede6d6; --paper-dark: #d6cdb8;
+    --kawara: #9b3220; --kawara-light: #c4603c; --kawara-pale: #edd8cc; --kawara-dark: #5c160a;
+    --sans: 'Noto Sans JP', sans-serif;
+    --serif-ja: 'Shippori Mincho', serif;
+    --serif-en: 'Cormorant Garamond', serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--kawara); color: var(--paper); font-family: var(--sans); font-weight: 300; line-height: 1.8; overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(155,50,32,0.95); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(237,216,204,0.2);
+  }
+  .nav-logo { font-family: var(--serif-ja); font-size: 1.4rem; font-weight: 600; letter-spacing: 0.15em; color: var(--paper); text-decoration: none; }
+  .nav-logo span { font-family: var(--serif-en); font-size: 0.65rem; font-weight: 300; letter-spacing: 0.4em; display: block; color: var(--kawara-pale); text-transform: uppercase; opacity: 0.6; margin-top: -2px; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: 0.78rem; letter-spacing: 0.2em; color: rgba(245,240,232,0.6); text-decoration: none; font-weight: 400; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--paper); }
+
+  /* HERO */
+  .page-hero {
+    padding: 10rem 3rem 5rem; max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end;
+  }
+  .breadcrumb { font-size: 0.68rem; letter-spacing: 0.35em; color: var(--kawara-pale); opacity: 0.6; text-transform: uppercase; margin-bottom: 1.5rem; }
+  .breadcrumb a { color: var(--kawara-pale); text-decoration: none; transition: opacity 0.2s; }
+  .breadcrumb a:hover { opacity: 1; }
+  .page-title-ja { font-family: var(--serif-ja); font-size: clamp(3.5rem, 6vw, 6rem); font-weight: 700; letter-spacing: 0.06em; line-height: 1; color: var(--paper); }
+  .page-title-en { font-family: var(--serif-en); font-size: 1rem; font-style: italic; color: var(--kawara-pale); opacity: 0.7; letter-spacing: 0.3em; margin-top: 0.8rem; }
+  .page-desc { font-family: var(--serif-ja); font-size: 0.95rem; line-height: 2.3; color: rgba(245,240,232,0.75); }
+  .page-rule { border: none; border-top: 1px solid rgba(237,216,204,0.2); margin: 0 3rem; }
+
+  /* FILTER */
+  .filter-bar {
+    max-width: 1200px; margin: 3rem auto; padding: 0 3rem;
+    display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;
+  }
+  .filter-label { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--kawara-pale); opacity: 0.6; text-transform: uppercase; margin-right: 0.5rem; }
+  .filter-tag {
+    display: inline-block; padding: 0.4rem 1rem;
+    border: 1px solid rgba(237,216,204,0.3); font-size: 0.7rem; letter-spacing: 0.15em;
+    color: rgba(245,240,232,0.6); cursor: pointer; transition: all 0.2s; background: transparent;
+    font-family: var(--sans); font-weight: 300;
+  }
+  .filter-tag.active, .filter-tag:hover { background: var(--paper); border-color: var(--paper); color: var(--kawara); }
+
+  /* PEOPLE LIST */
+  .people-wrap { max-width: 1200px; margin: 0 auto; padding: 0 3rem 8rem; }
+
+  .people-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 3rem; }
+
+  .person-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(237,216,204,0.12);
+    padding: 2.5rem 2rem;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease, background 0.3s;
+  }
+  .person-card.visible { opacity: 1; transform: translateY(0); }
+  
+
+  .person-avatar { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; margin-bottom: 1.5rem; border: 2px solid rgba(237,216,204,0.3); }
+  .person-avatar img { width: 100%; height: 100%; object-fit: cover; filter: sepia(20%); }
+
+  .person-tag { font-size: 0.6rem; letter-spacing: 0.3em; color: var(--kawara-pale); opacity: 0.7; text-transform: uppercase; margin-bottom: 0.4rem; font-weight: 400; }
+  .person-name { font-family: var(--serif-ja); font-size: 1.3rem; font-weight: 600; color: var(--paper); letter-spacing: 0.05em; margin-bottom: 0.2rem; }
+  .person-role { font-size: 0.72rem; letter-spacing: 0.15em; color: var(--kawara-pale); margin-bottom: 1.2rem; opacity: 0.8; }
+  .person-quote { font-family: var(--serif-ja); font-size: 0.88rem; line-height: 2.1; color: rgba(245,240,232,0.72); border-left: 2px solid rgba(237,216,204,0.35); padding-left: 1rem; }
+  .person-story { font-size: 0.8rem; line-height: 1.9; color: rgba(245,240,232,0.6); margin-top: 1rem; font-weight: 300; }
+  .person-link { display: inline-block; margin-top: 1.5rem; font-size: 0.7rem; letter-spacing: 0.25em; color: var(--kawara-pale); border-bottom: 1px solid rgba(237,216,204,0.3); padding-bottom: 2px; text-decoration: none; transition: border-color 0.2s; }
+  .person-link:hover { border-color: var(--kawara-pale); }
+
+  .person-links { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid rgba(237,216,204,0.2); }
+  .person-ext-link {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    font-size: 0.62rem; letter-spacing: 0.15em; padding: 0.3rem 0.7rem;
+    border: 1px solid rgba(237,216,204,0.3); color: var(--kawara-pale);
+    text-decoration: none; font-family: var(--sans); font-weight: 400;
+    transition: all 0.2s;
+  }
+  .person-ext-link:hover { background: var(--paper); border-color: var(--paper); color: var(--kawara); }
+
+  /* FOOTER */
+  footer { background: var(--kawara-dark); color: var(--paper); padding: 3rem; text-align: center; }
+  footer p { font-size: 0.72rem; color: rgba(245,240,232,0.35); letter-spacing: 0.15em; }
+  .back-link { display: inline-block; margin-bottom: 1.5rem; font-size: 0.72rem; letter-spacing: 0.25em; color: var(--kawara-pale); text-decoration: none; border-bottom: 1px solid rgba(237,216,204,0.3); padding-bottom: 2px; }
+  .back-link:hover { border-color: var(--kawara-pale); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  .page-hero > * { animation: fadeUp 0.7s ease forwards; opacity: 0; }
+  .page-hero > *:nth-child(1) { animation-delay: 0.1s; }
+  .page-hero > *:nth-child(2) { animation-delay: 0.3s; }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; } .nav-links { gap: 1.2rem; }
+    .page-hero { grid-template-columns: 1fr; padding: 8rem 1.5rem 3rem; gap: 2rem; }
+    .filter-bar, .people-wrap { padding: 0 1.5rem; }
+    .people-wrap { padding-bottom: 4rem; }
+    .people-grid { grid-template-columns: 1fr; }
+    .page-rule { margin: 0 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="gotsu.html" class="nav-logo">江津<span>Gotsu, Shimane</span></a>
+  <ul class="nav-links">
+    <li><a href="experience.html">体験</a></li>
+    <li><a href="people.html" class="active">人</a></li>
+    <li><a href="gourmet.html">グルメ</a></li>
+    <li><a href="gotsu.html#events">イベント</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div>
+    <p class="breadcrumb"><a href="gotsu.html">江津トップ</a> &nbsp;/&nbsp; 人</p>
+    <h1 class="page-title-ja">人</h1>
+    <p class="page-title-en">People of Gotsu</p>
+  </div>
+  <p class="page-desc">江津には、この町を選んで生きる人がいます。生まれ育った人、移り住んだ人、戻ってきた人。それぞれの物語が、江津という場所をかたちづくっています。</p>
+</div>
+<hr class="page-rule">
+
+<div class="filter-bar">
+  <span class="filter-label">属性</span>
+  <button class="filter-tag active" data-cat="all">すべて</button>
+  <button class="filter-tag" data-cat="shokunin">職人</button>
+  <button class="filter-tag" data-cat="ijyu">移住者</button>
+  <button class="filter-tag" data-cat="uターン">Uターン</button>
+  <button class="filter-tag" data-cat="nogyo">農業・漁業</button>
+</div>
+
+<div class="people-wrap">
+  <div class="people-grid" id="peopleGrid">
+
+    <div class="person-card" data-cat="shokunin">
+      <div class="person-avatar"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=200&q=80" alt="田中 美咲"></div>
+      <p class="person-tag">職人</p>
+      <p class="person-name">田中 美咲</p>
+      <p class="person-role">石州和紙 職人 — 江津市 桜江町</p>
+      <p class="person-quote">「この紙は、川と人の時間が重なってできる。江津の水がなければ、この白さは生まれない。」</p>
+      <p class="person-story">祖父の工房を継ぎ、20代でUターン。ユネスコ無形文化遺産に登録された石州和紙の伝統を守りながら、現代アートとのコラボレーションにも挑戦している。</p>
+      <div class="person-links">
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="person-ext-link">📷 Instagram</a>
+          <a href="https://www.city.gotsu.lg.jp" target="_blank" rel="noopener" class="person-ext-link">🌐 ウェブサイト</a>
+        </div>
+    </div>
+
+    <div class="person-card" data-cat="nogyo">
+      <div class="person-avatar"><img src="https://images.unsplash.com/photo-1546961342-ea5f62d5a27b?w=200&q=80" alt="松本 健太郎"></div>
+      <p class="person-tag">漁師 / 民宿オーナー</p>
+      <p class="person-name">松本 健太郎</p>
+      <p class="person-role">日本海漁師 — 江津市 江津町</p>
+      <p class="person-quote">「よそから来た人が、江津の魚を食べて笑顔になる。それが一番うれしい瞬間です。」</p>
+      <div class="person-links">
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="person-ext-link">📷 Instagram</a>
+          <a href="https://www.city.gotsu.lg.jp" target="_blank" rel="noopener" class="person-ext-link">🌐 ウェブサイト</a>
+        </div>
+    </div>
+
+    <div class="person-card" data-cat="ijyu">
+      <div class="person-avatar"><img src="https://images.unsplash.com/photo-1615729947596-a598e5de0ab3?w=200&q=80" alt="山田 恵子"></div>
+      <p class="person-tag">移住者 / 起業家</p>
+      <p class="person-name">山田 恵子</p>
+      <p class="person-role">カフェ「紙と珈琲」店主 — 江津市</p>
+      <p class="person-quote">「東京を離れてここへ来た。海と山と、顔の見える人間関係。江津には本当の豊かさがある。」</p>
+      <div class="person-links">
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="person-ext-link">📷 Instagram</a>
+          <a href="https://www.city.gotsu.lg.jp" target="_blank" rel="noopener" class="person-ext-link">🌐 ウェブサイト</a>
+        </div>
+    </div>
+
+    <div class="person-card" data-cat="uターン">
+      <div class="person-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80" alt="中村 大地"></div>
+      <p class="person-tag">Uターン / 農家</p>
+      <p class="person-name">中村 大地</p>
+      <p class="person-role">棚田農家 — 江津市 桜江町</p>
+      <p class="person-quote">「都会で10年働いて、戻ってきた。棚田の景色を見るたびに、帰ってきてよかったと思う。」</p>
+      <div class="person-links">
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="person-ext-link">📷 Instagram</a>
+          <a href="https://www.city.gotsu.lg.jp" target="_blank" rel="noopener" class="person-ext-link">🌐 ウェブサイト</a>
+        </div>
+    </div>
+
+    <div class="person-card" data-cat="shokunin">
+      <div class="person-avatar"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&q=80" alt="石川 義雄"></div>
+      <p class="person-tag">職人</p>
+      <p class="person-name">石川 義雄</p>
+      <p class="person-role">石州瓦 瓦師 — 江津市</p>
+      <p class="person-quote">「瓦は屋根の上で何百年も生き続ける。だから手を抜けない。一枚一枚が江津の顔です。」</p>
+      <div class="person-links">
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="person-ext-link">📷 Instagram</a>
+          <a href="https://www.city.gotsu.lg.jp" target="_blank" rel="noopener" class="person-ext-link">🌐 ウェブサイト</a>
+        </div>
+    </div>
+
+    <div class="person-card" data-cat="ijyu">
+      <div class="person-avatar"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80" alt="林 さやか"></div>
+      <p class="person-tag">移住者 / クリエイター</p>
+      <p class="person-name">林 さやか</p>
+      <p class="person-role">フォトグラファー — 江津市</p>
+      <p class="person-quote">「江津の光は特別。朝の川霧も、夕暮れの瓦屋根も、全部が被写体になる。」</p>
+      <div class="person-links">
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="person-ext-link">📷 Instagram</a>
+          <a href="https://www.city.gotsu.lg.jp" target="_blank" rel="noopener" class="person-ext-link">🌐 ウェブサイト</a>
+        </div>
+    </div>
+
+    <div class="person-card" data-cat="nogyo">
+      <div class="person-avatar"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80" alt="村上 正一"></div>
+      <p class="person-tag">農家 / 地域おこし</p>
+      <p class="person-name">村上 正一</p>
+      <p class="person-role">有機農家 — 江津市 桜江町</p>
+      <p class="person-quote">「この土地の野菜は、この土地でしか育たない味がある。それを知ってほしくて、農家を続けています。」</p>
+      <div class="person-links">
+          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="person-ext-link">📷 Instagram</a>
+          <a href="https://www.city.gotsu.lg.jp" target="_blank" rel="noopener" class="person-ext-link">🌐 ウェブサイト</a>
+        </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <a href="gotsu.html" class="back-link">← 江津トップへ戻る</a>
+  
+</footer>
+
+<script>
+  const allCards = document.querySelectorAll('.person-card');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 100);
+    });
+  }, { threshold: 0.1 });
+  allCards.forEach(c => io.observe(c));
+
+  document.querySelectorAll('.filter-tag').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const cat = this.dataset.cat;
+      allCards.forEach(card => {
+        const match = cat === 'all' || card.dataset.cat === cat;
+        card.style.display = match ? '' : 'none';
+        if (match) card.classList.add('visible');
+      });
+    });
+  });
+</script>
+</body>
+</html>

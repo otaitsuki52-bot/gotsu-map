@@ -120,14 +120,41 @@
   .page-hero > *:nth-child(1) { animation-delay: 0.1s; }
   .page-hero > *:nth-child(2) { animation-delay: 0.3s; }
 
-  @media (max-width: 900px) {
-    nav { padding: 1rem 1.5rem; } .nav-links { gap: 1.2rem; }
-    .page-hero { grid-template-columns: 1fr; padding: 8rem 1.5rem 3rem; gap: 2rem; }
-    .filter-bar, .cards-wrap, .shop-section { padding-left: 1.5rem; padding-right: 1.5rem; }
-    .cards-wrap { padding-bottom: 2rem; } .shop-section { padding-bottom: 4rem; }
-    .cards-grid, .shop-grid { grid-template-columns: 1fr; }
-    .page-rule { margin: 0 1.5rem; }
+
+  @media (max-width: 768px) {
+    nav { padding: 0.9rem 1.2rem; }
+    .nav-logo { font-size: 1.1rem; }
+    .nav-logo span { font-size: 0.55rem; }
+    .nav-links { gap: 0.8rem; }
+    .nav-links a { font-size: 0.65rem; letter-spacing: 0.08em; }
+
+    .page-hero { grid-template-columns: 1fr; padding: 6rem 1.2rem 2.5rem; gap: 1.5rem; }
+    .page-title-ja { font-size: clamp(2.5rem, 10vw, 4rem); }
+    .page-desc { font-size: 0.85rem; line-height: 2; }
+    .page-rule { margin: 0 1.2rem; }
+
+    .filter-bar { padding: 0 1.2rem; margin: 1.5rem auto; gap: 0.5rem; }
+    .filter-tag { padding: 0.3rem 0.7rem; font-size: 0.65rem; }
+
+    .cards-wrap { padding: 0 1.2rem 2rem; }
+    .cards-grid { grid-template-columns: 1fr; gap: 1px; }
+    .food-img { height: 180px; }
+    .food-card-body { padding: 1.2rem; }
+    .food-name { font-size: 1rem; }
+    .food-desc { font-size: 0.75rem; }
+    .card-links { gap: 0.4rem; }
+    .card-link { font-size: 0.58rem; padding: 0.25rem 0.6rem; }
+
+    .shop-section { padding: 2rem 1.2rem 3rem; }
+    .shop-grid { grid-template-columns: 1fr; gap: 1px; }
+    .shop-name { font-size: 0.95rem; }
+    .shop-info { font-size: 0.68rem; }
   }
+  @media (max-width: 480px) {
+    .nav-links a { font-size: 0.6rem; }
+    .nav-links { gap: 0.6rem; }
+  }
+
 </style>
 </head>
 <body>

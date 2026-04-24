@@ -491,23 +491,78 @@
   }
 
   /* ─── MOBILE ─── */
-  @media (max-width: 900px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { gap: 1.5rem; }
-    .hero { grid-template-columns: 1fr; }
-    .hero-left { padding: 7rem 2rem 3rem; min-height: 50vh; }
-    .hero-right { padding: 3rem 2rem 4rem; }
-    .section-wrap { padding: 0 1.5rem; }
-    .exp-grid { grid-template-columns: 1fr; }
-    .exp-card:first-child { grid-row: auto; }
-    .exp-grid .exp-card:first-child .exp-img { min-height: 240px; }
-    .exp-grid .exp-card:first-child .exp-name { font-size: 1.2rem; }
-    .people-grid { grid-template-columns: 1fr; }
-    .gourmet-layout { grid-template-columns: 1fr; }
-    .gourmet-intro { position: static; }
-    .food-item { grid-template-columns: 120px 1fr; }
-    .events-grid { grid-template-columns: 1fr; }
-    .footer-inner { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 768px) {
+
+    /* NAV */
+    nav {
+      padding: 0.9rem 1.2rem;
+      flex-wrap: nowrap;
+    }
+    .nav-logo { font-size: 1.1rem; }
+    .nav-logo span { font-size: 0.55rem; }
+    .nav-links { gap: 1rem; }
+    .nav-links a { font-size: 0.68rem; letter-spacing: 0.1em; }
+
+    /* HERO */
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { min-height: 55vw; padding: 5rem 1.5rem 2rem; }
+    .hero-text { padding: 0; }
+    .hero-title { font-size: clamp(2rem, 10vw, 3.5rem); }
+    .hero-title-en { font-size: 0.85rem; }
+    .hero-eyebrow { font-size: 0.62rem; margin-bottom: 0.8rem; }
+    .hero-photo { height: 160px; }
+    .hero-right { padding: 2rem 1.5rem 2.5rem; }
+    .hero-desc { font-size: 0.88rem; line-height: 2; }
+    .hero-cta { margin-top: 1.5rem; flex-wrap: wrap; gap: 0.8rem; }
+    .btn-primary, .btn-outline { padding: 0.75rem 1.5rem; font-size: 0.72rem; }
+    .hero-scroll { display: none; }
+
+    /* SECTIONS */
+    .section-wrap { padding: 0 1.2rem; }
+    #experience, #people, #gourmet, #events { padding: 3rem 0; }
+    .section-header { margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.8rem; }
+    .section-title-ja { font-size: 2rem; }
+    .section-num { font-size: 0.6rem; }
+
+    /* EXPERIENCE GRID */
+    .exp-grid { grid-template-columns: 1fr; gap: 1px; }
+    .exp-img { height: 160px; }
+    .exp-body { padding: 1.2rem; }
+    .exp-name { font-size: 1rem; }
+    .exp-sub { font-size: 0.72rem; }
+
+    /* PEOPLE GRID */
+    .people-grid { grid-template-columns: 1fr; gap: 1px; }
+    .person-card { padding: 1.5rem 1.2rem; }
+    .person-name { font-size: 1.05rem; }
+    .person-quote { font-size: 0.82rem; line-height: 1.9; }
+
+    /* FOOD GRID */
+    .food-grid { grid-template-columns: 1fr; gap: 1px; }
+    .food-img-top { height: 160px; }
+    .food-body { padding: 1.2rem; }
+    .food-name { font-size: 1rem; }
+    .food-desc { font-size: 0.75rem; }
+
+    /* EVENTS */
+    .events-grid { grid-template-columns: 1fr; gap: 1px; }
+    .event-card { padding: 1.2rem 1.2rem; gap: 1rem; }
+    .event-day { font-size: 1.8rem !important; }
+    .event-name { font-size: 1rem; }
+    .event-detail { font-size: 0.72rem; }
+
+    /* CARD LINKS */
+    .card-links { gap: 0.4rem; }
+    .card-link { font-size: 0.58rem; padding: 0.25rem 0.6rem; }
+    .person-links { gap: 0.4rem; }
+    .person-ext-link { font-size: 0.58rem; padding: 0.25rem 0.6rem; }
+  }
+
+  @media (max-width: 480px) {
+    .nav-links { gap: 0.7rem; }
+    .nav-links a { font-size: 0.62rem; }
+    .hero-left { min-height: 50vw; }
+    .hero-title { font-size: clamp(1.8rem, 9vw, 2.5rem); }
   }
 </style>
 </head>

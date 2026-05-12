@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>グルメ — 江津 GOTSU</title>
+<title data-ja="グルメ — 江津 GOTSU" data-en="Gourmet — Gotsu">グルメ — 江津 GOTSU</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
@@ -122,27 +122,56 @@
     .nav-links { gap: 0.6rem; }
   }
 
+  /* === 言語切替ボタン === */
+  .nav-right { display: flex; align-items: center; gap: 2rem; }
+  .lang-switch { display: flex; gap: 0.3rem; border-left: 1px solid var(--paper-dark); padding-left: 1.4rem; }
+  .lang-btn { 
+    font-family: var(--serif-en); 
+    font-size: 0.78rem; 
+    background: transparent; 
+    border: 1px solid var(--paper-dark);
+    color: var(--ink-faint); 
+    padding: 0.3rem 0.7rem; 
+    cursor: pointer; 
+    letter-spacing: 0.12em;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  .lang-btn:hover { color: var(--ink); border-color: var(--ink-faint); }
+  .lang-btn.active { background: var(--kawara); color: var(--paper); border-color: var(--kawara); }
+  @media (max-width: 768px) {
+    .nav-right { gap: 1rem; }
+    .lang-switch { padding-left: 0.7rem; gap: 0.2rem; }
+    .lang-btn { font-size: 0.7rem; padding: 0.25rem 0.55rem; }
+  }
+
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo">江津<span>Gotsu, Shimane</span></a>
-  <ul class="nav-links">
-    <li><a href="experience.html">体験</a></li>
-    <li><a href="people.html">人</a></li>
-    <li><a href="gourmet.html" class="active">グルメ</a></li>
-    <li><a href="index.html#events">イベント</a></li>
-  </ul>
+  <a href="index.html" class="nav-logo"><span data-ja="江津" data-en="Gotsu">江津</span><span>Gotsu, Shimane</span></a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="experience.html" data-ja="体験" data-en="Experience">体験</a></li>
+      <li><a href="people.html" data-ja="人" data-en="People">人</a></li>
+      <li><a href="gourmet.html" class="active" data-ja="グルメ" data-en="Gourmet">グルメ</a></li>
+      <li><a href="index.html#events" data-ja="イベント" data-en="Events">イベント</a></li>
+    </ul>
+    <div class="lang-switch">
+      <button type="button" class="lang-btn active" data-lang="ja">JA</button>
+      <button type="button" class="lang-btn" data-lang="en">EN</button>
+    </div>
+  </div>
 </nav>
 
 <div class="page-hero">
   <div>
-    <p class="breadcrumb"><a href="index.html">江津トップ</a> &nbsp;/&nbsp; グルメ</p>
-    <h1 class="page-title-ja">グルメ</h1>
+    <p class="breadcrumb"><a href="index.html" data-ja="江津トップ" data-en="Home">江津トップ</a> &nbsp;/&nbsp; <span data-ja="グルメ" data-en="Gourmet">グルメ</span></p>
+    <h1 class="page-title-ja" data-ja="グルメ" data-en="Gourmet">グルメ</h1>
     <p class="page-title-en">Taste of Gotsu</p>
   </div>
-  <p class="page-desc">日本海の新鮮な魚介、中国山地で育った畜産物、石見の棚田米。江津の食は、土地の恵みそのものです。食べることが旅になる──そんな体験が、ここにはあります。</p>
+  <p class="page-desc" data-ja="日本海の新鮮な魚介、中国山地で育った畜産物、石見の棚田米。江津の食は、土地の恵みそのものです。食べることが旅になる──そんな体験が、ここにはあります。" data-en="Fresh seafood from the Sea of Japan, livestock raised in the Chugoku Mountains, terraced rice from Iwami. The food of Gotsu is the gift of the land itself. Here, eating becomes its own journey.">日本海の新鮮な魚介、中国山地で育った畜産物、石見の棚田米。江津の食は、土地の恵みそのものです。食べることが旅になる──そんな体験が、ここにはあります。</p>
 </div>
 <hr class="page-rule">
 
@@ -150,147 +179,13 @@
 <div class="cards-wrap">
   <div class="cards-grid">
 
-    <div class="food-card" data-cat="mountain">
-      <img class="food-img" src="https://images.unsplash.com/photo-1547592166-23ac45744acd?w=600&q=80" alt="まる姫ポーク">
-      <div class="food-body">
-        <p class="food-name">まる姫ポーク</p>
-        <p class="food-desc">江津市が誇るブランド豚。2018年の味噌カツ丼コンテスト優勝の実績。やさか味噌とのコンビが絶品で、市内のとんかつ店で食べられる。</p>
-        <hr class="food-divider">
-        <p class="food-price">¥1,000〜 / 市内飲食店</p>
-        <p class="food-shop">📍 江津市内の飲食店</p>
-        <div class="card-links">
-          <a href="https://gotsu-kanko.jp" target="_blank" rel="noopener" class="card-link">🌐 お店を探す</a>
-          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="food-card" data-cat="sea">
-      <img class="food-img" src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600&q=80" alt="日本海海鮮">
-      <div class="food-body">
-        <p class="food-name">日本海の海鮮丼</p>
-        <p class="food-desc">浜田港や江津近海で水揚げされた新鮮な魚介を豪快に盛り合わせ。のどぐろ・バトウ・あなごなど石見ならではの幸が揃う。</p>
-        <hr class="food-divider">
-        <p class="food-price">¥1,500〜 / 各地の飲食店</p>
-        <p class="food-shop">📍 食彩空間 海人（江津駅徒歩1分）ほか</p>
-        <div class="card-links">
-          <a href="https://gotsu-kanko.jp" target="_blank" rel="noopener" class="card-link">🌐 お店を探す</a>
-          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="food-card" data-cat="sweets">
-      <img class="food-img" src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=600&q=80" alt="敬川饅頭">
-      <div class="food-body">
-        <p class="food-name">敬川饅頭</p>
-        <p class="food-desc">江津に生まれ育った人なら誰もが知る昔ながらの素朴な饅頭。程よい甘みと薄皮が特徴。帰省のたびに買い求める地元の定番土産。</p>
-        <hr class="food-divider">
-        <p class="food-price">数個入り ¥500〜</p>
-        <p class="food-shop">📍 江津市内の菓子店</p>
-        <div class="card-links">
-          <a href="https://gotsu-kanko.jp" target="_blank" rel="noopener" class="card-link">🌐 詳細はこちら</a>
-          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="food-card" data-cat="sea">
-      <img class="food-img" src="https://images.unsplash.com/photo-1535448033526-c0e85c9e6968?w=600&q=80" alt="江の川の天然鮎">
-      <div class="food-body">
-        <p class="food-name">江の川の天然鮎</p>
-        <p class="food-desc">中国地方最大の大河・江の川が育てた天然鮎。塩焼きにすると皮はパリッと中はふっくら。川の香りを楽しめる夏だけの贅沢な味。</p>
-        <hr class="food-divider">
-        <p class="food-price">¥1,200〜</p>
-        <p class="food-shop">📍 桜江地区の川沿い料理店・道の駅</p>
-        <div class="card-links">
-          <a href="https://gotsu-kanko.jp" target="_blank" rel="noopener" class="card-link">🌐 お店を探す</a>
-          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="food-card" data-cat="mountain">
-      <img class="food-img" src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&q=80" alt="桜江の棚田米">
-      <div class="food-body">
-        <p class="food-name">桜江の棚田米</p>
-        <p class="food-desc">江の川流域の昼夜の寒暖差が生む、もっちりとした甘みのある棚田米。地元農家が大切に育てた一粒一粒が、江津の食卓を支えている。</p>
-        <hr class="food-divider">
-        <p class="food-price">¥800〜 / 定食</p>
-        <p class="food-shop">📍 道の駅 サンピコごうつ / 農家民泊</p>
-        <div class="card-links">
-          <a href="https://gotsu-kanko.jp" target="_blank" rel="noopener" class="card-link">🌐 お店を探す</a>
-          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="food-card" data-cat="mountain">
-      <img class="food-img" src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=600&q=80" alt="石見焼の器">
-      <div class="food-body">
-        <p class="food-name">石見焼の器で楽しむ料理</p>
-        <p class="food-desc">伝統工芸・石見焼の器で提供される地元料理。一期一会の風合いを持つ手作りの器が、江津の食をより豊かに彩る。市内の料亭・カフェで体験できる。</p>
-        <hr class="food-divider">
-        <p class="food-price">¥1,500〜 / コース</p>
-        <p class="food-shop">📍 有福温泉エリアのレストラン</p>
-        <div class="card-links">
-          <a href="https://gotsu-kanko.jp/arifuku" target="_blank" rel="noopener" class="card-link">🌐 お店を探す</a>
-          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="food-card" data-cat="sea">
-      <img class="food-img" src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80" alt="石見和牛">
-      <div class="food-body">
-        <p class="food-name">石見和牛</p>
-        <p class="food-desc">島根県西部・石見地方で育てられたブランド和牛。しまね海洋館アクアス隣のレストランでは石見和牛カルビ丼が人気メニューのひとつ。</p>
-        <hr class="food-divider">
-        <p class="food-price">¥1,800〜 / 各地の飲食店</p>
-        <p class="food-shop">📍 アクアスレストラン / 市内飲食店</p>
-        <div class="card-links">
-          <a href="https://gotsu-kanko.jp" target="_blank" rel="noopener" class="card-link">🌐 お店を探す</a>
-          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="food-card" data-cat="mountain">
-      <img class="food-img" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80" alt="有福温泉の地元食材">
-      <div class="food-body">
-        <p class="food-name">有福温泉のイタリアン</p>
-        <p class="food-desc">有福温泉街の中心に位置するレストランが提供する本格イタリアン。浜田港の新鮮な日本海の幸と、地元で獲れる旬の食材をふんだんに使用。</p>
-        <hr class="food-divider">
-        <p class="food-price">¥1,500〜 / ランチ</p>
-        <p class="food-shop">📍 有福温泉街 / 火曜定休</p>
-        <div class="card-links">
-          <a href="https://gotsu-kanko.jp/arifuku" target="_blank" rel="noopener" class="card-link">🌐 詳細はこちら</a>
-          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="food-card" data-cat="drink">
-      <img class="food-img" src="https://images.unsplash.com/photo-1534482421-64566f976cfa?w=600&q=80" alt="石州の地酒">
-      <div class="food-body">
-        <p class="food-name">石州の地酒</p>
-        <p class="food-desc">石見の清冽な伏流水と島根県産米で醸した辛口の地酒。日本海の幸との相性は抜群。道の駅サンピコごうつなどで購入できる。</p>
-        <hr class="food-divider">
-        <p class="food-price">¥600〜 / 一杯</p>
-        <p class="food-shop">📍 道の駅 サンピコごうつ / 市内酒店</p>
-        <div class="card-links">
-          <a href="https://gotsu-kanko.jp" target="_blank" rel="noopener" class="card-link">🌐 詳細はこちら</a>
-          <a href="https://www.instagram.com" target="_blank" rel="noopener" class="card-link">📷 Instagram</a>
-        </div>
-      </div>
-    </div>
 
   </div>
 </div>
 
 
 <footer>
-  <a href="index.html" class="back-link">← 江津トップへ戻る</a>
+  <a href="index.html" class="back-link" data-ja="← 江津トップへ戻る" data-en="← Back to Home">← 江津トップへ戻る</a>
   
 </footer>
 
@@ -312,6 +207,34 @@
         if (match) card.classList.add('visible');
       });
     });
+  });
+</script>
+
+<script>
+  /* === 言語切替の仕組み === */
+  function applyLanguage(lang) {
+    localStorage.setItem('gotsu_lang', lang);
+    document.documentElement.lang = lang;
+    document.documentElement.setAttribute('data-lang', lang);
+    document.querySelectorAll('[data-ja][data-en]').forEach(el => {
+      const txt = el.getAttribute('data-' + lang);
+      if (txt === null) return;
+      if (el.tagName === 'TITLE') {
+        document.title = txt;
+      } else {
+        el.textContent = txt;
+      }
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+    document.dispatchEvent(new CustomEvent('langchange', { detail: { lang } }));
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
+    });
+    applyLanguage(localStorage.getItem('gotsu_lang') || 'ja');
   });
 </script>
 </body>

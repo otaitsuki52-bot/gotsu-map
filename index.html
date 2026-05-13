@@ -502,20 +502,6 @@
   .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
-  /* ─── BANNER ─── */
-  .banner { background: var(--kawara-dark); color: var(--paper); overflow: hidden; padding: 0.8rem 0; white-space: nowrap; }
-
-  .banner-track { display: inline-flex; animation: marquee 24s linear infinite; }
-
-  .banner-item { font-family: var(--serif-en); font-size: 0.75rem; letter-spacing: 0.4em; text-transform: uppercase; padding: 0 3rem; opacity: 0.85; }
-
-  .banner-dot { opacity: 0.4; padding: 0 0.5rem; }
-
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-
   /* ─── MOBILE ─── */
   @media (max-width: 768px) {
 
@@ -697,22 +683,6 @@
     </div>
   </div>
 </nav>
-
-<!-- BANNER -->
-<div class="banner">
-  <div class="banner-track">
-    <span class="banner-item">Experiences</span><span class="banner-dot">·</span>
-    <span class="banner-item">People</span><span class="banner-dot">·</span>
-    <span class="banner-item">Gourmet</span><span class="banner-dot">·</span>
-    <span class="banner-item">Events</span><span class="banner-dot">·</span>
-    <span class="banner-item" data-ja="島根県 江津市" data-en="Gotsu, Shimane">島根県 江津市</span><span class="banner-dot">·</span>
-    <span class="banner-item">Experiences</span><span class="banner-dot">·</span>
-    <span class="banner-item">People</span><span class="banner-dot">·</span>
-    <span class="banner-item">Gourmet</span><span class="banner-dot">·</span>
-    <span class="banner-item">Events</span><span class="banner-dot">·</span>
-    <span class="banner-item" data-ja="島根県 江津市" data-en="Gotsu, Shimane">島根県 江津市</span><span class="banner-dot">·</span>
-  </div>
-</div>
 
 <!-- HERO -->
 <section class="hero">
